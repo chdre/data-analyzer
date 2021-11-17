@@ -176,6 +176,8 @@ class Dataset:
         else:
             ynew = target_path
 
+        if self.smoothed:
+            ynew = self.smooth_y(ynew)
         if self.maximum_found:
             ynew_max = self.find_maximum(ynew)
 
