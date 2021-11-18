@@ -181,10 +181,28 @@ class Dataset:
             else:
                 ynew = target_path
 
-            if self.smoothed:
-                ynew = self.smooth_y(ynew)
-            if self.maximum_found:
-                ynew_max = self.find_maximum(ynew)
+            if len(targets.shape) == 1:
+                self.ymax = np.concatenate((self.ymax, targets), axis=0)
+            else:
+                if self.smoothed:
+                    ynew = self.smooth_y(ynew)
+                if self.maximum_found:
+                    ynew_max = self.find_maximum(ynew)
 
-            self.y = np.concatenate((self.y, ynew), axis=0)
+                self.y = np.concatenate((self.y, ynew), axis=0)
+                self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
+
+        def extend_ymax(self, ymax_new):
+            """Extends only ymax.
+            """
+            if isinstance(ymax_new, str) or isinstance(ymax_new, PosixPath):
+                ynew = np.load(ymax_new)
+            else:
+                ynew = ymax_new
+
             self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
+
+        def replace_y(self, new_y):
+            """Replaces all of current y with new values.
+            """
+            self.y = new_y
