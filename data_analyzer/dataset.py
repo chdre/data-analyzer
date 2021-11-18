@@ -138,7 +138,7 @@ class Dataset:
     def prep_data_mlaq(self, window):
         """Smoothens y and finds the maximum values.
         """
-        self.y = self.smooth_y(self.y, smoothing='savgol', window=11)
+        self.y = self.smooth_y(self.y, smoothing='savgol', window=window)
         self.ymax = self.find_maximum(self.y)
 
     def save_data(self, path, method='numpy'):
