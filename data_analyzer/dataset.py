@@ -141,22 +141,22 @@ class Dataset:
         self.y = self.smooth_y(self.y, smoothing='savgol', window=window)
         self.ymax = self.find_maximum(self.y)
 
-    def save_data(self, path, method='numpy'):
+    def save_data(self, path, y='ymax', method='numpy'):
         """Saves x and y to path.
 
         :param path: Path for saving files.
         :type path: str
+        :param y: String wrapped in eval to specify which y to save to
+                  file. Can be ymax or y. Defaults to ymax.
+        :type y: str
         :param method: Which method to use for saving files. Defaults to numpy
                        using np.save(...).
         :type method: str or pathlib.PosixPath
         """
-        if self.ymax:
-            if isinstance(path, str):
-                path = Path(path)
-            np.save(path / 'features', self.x)
-            np.save(path / 'targets', self.ymax)
-        else:
-            print('Maximum values for y is not found')
+        if isinstance(path, str):
+            path = Path(path)
+        np.save(path / 'features', self.x)
+        np.save(path / 'targets', self.eval(y))
 
     def extend_data(self, features=None, targets=None):
         """Extends x and y according to paths.
