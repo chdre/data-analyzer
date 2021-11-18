@@ -158,29 +158,33 @@ class Dataset:
         else:
             print('Maximum values for y is not found')
 
-    def extend_data(self, feature_path, target_path):
+    def extend_data(self, features=None, targets=None):
         """Extends x and y according to paths.
 
-        :param feature_path: Path to features or features
-        :type paths: pathlib.PosixPath or str or ndarray
-        :param target_path: Path to targets or features
-        :type paths: pathlib.PosixPath or str or ndarray
+        :param features: Path to features or features. Defaults to None.
+        :type features: pathlib.PosixPath or str or ndarray
+        :param targets: Path to targets or targets. Defaults to None.
+        :type targets: pathlib.PosixPath or str or ndarray
         """
 
-        if isinstance(feature_path, str) or isinstance(feature_path, PosixPath):
-            xnew = np.load(feature_path)
-        else:
-            xnew = feature_path
-        if isinstance(target_path, str) or isinstance(target_path, PosixPath):
-            ynew = np.load(target_path)
-        else:
-            ynew = target_path
+        if features is not None:
+            if isinstance(feature_path, str) or isinstance(feature_path, PosixPath):
+                xnew = np.load(feature_path)
+            else:
+                xnew = feature_path
 
-        if self.smoothed:
-            ynew = self.smooth_y(ynew)
-        if self.maximum_found:
-            ynew_max = self.find_maximum(ynew)
+            self.x = np.concatenate((self.x, xnew), axis=0)
 
-        self.x = np.concatenate((self.x, xnew), axis=0)
-        self.y = np.concatenate((self.y, ynew), axis=0)
-        self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
+        if targets is not None:
+            if isinstance(target_path, str) or isinstance(target_path, PosixPath):
+                ynew = np.load(target_path)
+            else:
+                ynew = target_path
+
+            if self.smoothed:
+                ynew = self.smooth_y(ynew)
+            if self.maximum_found:
+                ynew_max = self.find_maximum(ynew)
+
+            self.y = np.concatenate((self.y, ynew), axis=0)
+            self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
