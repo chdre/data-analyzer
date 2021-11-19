@@ -168,18 +168,18 @@ class Dataset:
         """
 
         if features is not None:
-            if isinstance(feature_path, str) or isinstance(feature_path, PosixPath):
-                xnew = np.load(feature_path)
+            if isinstance(features, str) or isinstance(features, PosixPath):
+                xnew = np.load(features)
             else:
-                xnew = feature_path
+                xnew = features
 
             self.x = np.concatenate((self.x, xnew), axis=0)
 
         if targets is not None:
-            if isinstance(target_path, str) or isinstance(target_path, PosixPath):
-                ynew = np.load(target_path)
+            if isinstance(targets, str) or isinstance(targets, PosixPath):
+                ynew = np.load(targets)
             else:
-                ynew = target_path
+                ynew = targets
 
             if len(targets.shape) == 1:
                 self.ymax = np.concatenate((self.ymax, targets), axis=0)
