@@ -30,7 +30,7 @@ class Dataset:
         return self.x, self.y
 
     @staticmethod
-    def savgol(y, window, polyorder=3):
+    def savgol(y, window_length, polyorder=3):
         """Smooths data using Savitzky-Golay filtering.
 
         :param window: Number of data points to smooth over.
@@ -39,18 +39,19 @@ class Dataset:
         :type polyorder: int
         """
 
-        if window % 2 == 0:
+        if window_length % 2 == 0:
             warnings.warn(
-                'Parameter window must be odd. Increased window by 1.')
+                'Parameter window_length must be odd. Increased window by 1.')
             window += 1
         # Dummy in case y = self.y
         ynew = y
-        if len(y) > 1:
+
+        if len(y.shape) > 1:
             # Smooth over multiple data
             for i, data in enumerate(y):
-                ynew[i] = savgol_filter(data, window, polyorder)
+                ynew[i] = savgol_filter(data, window_length, polyorder)
         else:
-            ynew = savgol_filter(y, window, polyorder)
+            ynew = savgol_filter(y, window_length, polyorder)
 
         return ynew
 
@@ -132,15 +133,18 @@ class Dataset:
 
         smoothers = {'savgol': self.savgol}
 
-        ysmooth = smoothers[smoothing](y=y, **kwargs)
+        window_length = kwargs['window_length']
+
+        ysmooth = smoothers[smoothing](y=y, window_length=window_length)
         self.smoothed = True
 
         return ysmooth
 
-    def prep_data_mlaq(self, window):
+    def prep_data_mlaq(self, window_length):
         """Smoothens y and finds the maximum values.
         """
-        self.y = self.smooth_y(self.y, smoothing='savgol', window=window)
+        self.y = self.smooth_y(self.y, smoothing='savgol',
+                               window_length=window_length)
         self.ymax = self.find_maximum(self.y)
 
     def save_data(self, path, y='ymax', method='numpy'):
