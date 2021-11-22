@@ -93,7 +93,7 @@ class Dataset:
                 ymax[i] = y[i, argmax]
         else:
             if height_flag:
-                height = 0.5 * y[np.argmax(y[i])]
+                height = 0.5 * y[np.argmax(y)]
             argmax = find_peaks(y,
                                 distance=distance,
                                 height=height,
