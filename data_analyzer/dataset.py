@@ -196,7 +196,7 @@ class Dataset:
                     ynew_max = self.find_maximum(ynew)
 
                 self.y = np.concatenate((self.y, ynew), axis=0)
-                if len(targets.shape[0]) > 1:
+                if len(targets.shape) > 1:
                     self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
 
     def extend_ymax(self, ymax_new):
