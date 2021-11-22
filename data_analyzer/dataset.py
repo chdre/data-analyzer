@@ -164,7 +164,7 @@ class Dataset:
         np.save(path / 'features', self.x)
         np.save(path / 'targets', self.eval(y))
 
-    def extend_data(self, features=None, targets=None):
+    def extend_data(self, features=None, targets=None, ymax=None):
         """Extends x and y according to paths.
 
         :param features: Path to features or features. Defaults to None.
@@ -187,7 +187,7 @@ class Dataset:
             else:
                 ynew = targets
 
-            if len(targets.shape) == 1:
+            if ymax is not None:
                 self.ymax = np.concatenate((self.ymax, targets), axis=0)
             else:
                 if self.smoothed:
@@ -196,7 +196,8 @@ class Dataset:
                     ynew_max = self.find_maximum(ynew)
 
                 self.y = np.concatenate((self.y, ynew), axis=0)
-                self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
+                if len(targets.shape[0]) > 1:
+                    self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
 
     def extend_ymax(self, ymax_new):
         """Extends only ymax.
