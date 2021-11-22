@@ -198,17 +198,17 @@ class Dataset:
                 self.y = np.concatenate((self.y, ynew), axis=0)
                 self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
 
-        def extend_ymax(self, ymax_new):
-            """Extends only ymax.
-            """
-            if isinstance(ymax_new, str) or isinstance(ymax_new, PosixPath):
-                ynew = np.load(ymax_new)
-            else:
-                ynew = ymax_new
+    def extend_ymax(self, ymax_new):
+        """Extends only ymax.
+        """
+        if isinstance(ymax_new, str) or isinstance(ymax_new, PosixPath):
+            ynew = np.load(ymax_new)
+        else:
+            ynew = ymax_new
 
-            self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
+        self.ymax = np.concatenate((self.ymax, ynew_max), axis=0)
 
-        def replace_y(self, new_y):
-            """Replaces all of current y with new values.
-            """
-            self.y = new_y
+    def replace_y(self, new_y):
+        """Replaces all of current y with new values.
+        """
+        self.y = new_y
