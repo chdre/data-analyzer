@@ -91,6 +91,8 @@ class Dataset:
                                     prominence=prominence)[0][0]
                 ymax[i] = y[i, argmax]
         else:
+            if height_flag:
+                height = 0.5 * y[np.argmax(y[i])]
             argmax = find_peaks(y,
                                 distance=distance,
                                 height=height,
