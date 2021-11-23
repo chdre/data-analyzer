@@ -162,7 +162,7 @@ class Dataset:
         if isinstance(path, str):
             path = Path(path)
         np.save(path / 'features', self.x)
-        np.save(path / 'targets', self.eval(y))
+        np.save(path / 'targets', eval('self.' + y))
 
     def extend_data(self, features=None, targets=None, ymax=None):
         """Extends x and y according to paths.
